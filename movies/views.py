@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from .models import Movie
 
@@ -23,3 +23,11 @@ def add(request):
         return HttpResponseRedirect('/movies')
     
     return render(request, 'movies/add.html')
+
+def movieDelete(request, id):
+    try:
+        movie = Movie.objects.get(pk=id)
+    except:
+        return Http404("Movie Does not found")
+    movie.delete()
+    return HttpResponseRedirect('/movies')
