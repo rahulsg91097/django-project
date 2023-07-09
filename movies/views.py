@@ -1,5 +1,7 @@
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+
+from movies.forms import UploadForm
 from .models import Movie
 
 def movies(request):
@@ -31,3 +33,12 @@ def movieDelete(request, id):
         return Http404("Movie Does not found")
     movie.delete()
     return HttpResponseRedirect('/movies')
+
+def movieUpload(request):
+    if request.POST:
+        form = UploadForm(request.POST, request.FILES)
+        print(request.FILES)
+        if form.is_valid():
+            form.save()
+        return redirect(home)
+    return render(request, 'movies/upload.html', {'form': UploadForm})

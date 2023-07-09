@@ -17,12 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from movies import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home),
+    path('', views.home, name='home'),
     path('movies/', views.movies),
     path('movies/<int:id>', views.detail),
     path('movies/add', views.add),
-    path('movies/delete/<int:id>', views.movieDelete)
+    path('movies/delete/<int:id>', views.movieDelete),
+    path('movies/upload', views.movieUpload, name='upload')
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
